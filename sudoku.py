@@ -1,22 +1,29 @@
 #coding: utf-8
 
 
-import sys, time, copy
-from random import choice
+import sys
 import time
+import copy
+import time
+from random import choice
 
 class Sudoku:
 
-    def __init__(self):
+    def create(self):
         line = [0 for i in range(1,10)]
         self.sudoku_init = [copy.deepcopy(line) for i in range(1,10)]
 
-        while(not self.create()):
+        while(not self._do_create(self.sudoku_init)):
             pass
-        self.out_put(self.sudoku)
+        self._create_output(self.sudoku)
 
-    def create(self):
-        self.sudoku = copy.deepcopy(self.sudoku_init)
+    def resolve(self,sudoku):
+        self.sudoku_init = sudoku
+        self.sudoku = copy.deepcopy(sudoku)
+        self._do_resolve(0)
+
+    def _do_create(self,sudoku):
+        self.sudoku = copy.deepcopy(sudoku)
 
         for i in range(0,9):
             for j in range(0,9):
@@ -26,6 +33,24 @@ class Sudoku:
                         return False
                     self.sudoku[i][j] = choice(tmp)
         return True
+
+    def _do_resolve(self,pos):
+        x = pos / 9
+        y = pos % 9
+
+        if pos > 80:
+            self._resolve_output(self.sudoku)
+            return 
+
+        if self.sudoku[x][y] != 0:
+            self._do_resolve(pos+1)
+        else:
+            left = self._left(x,y)
+            for i in left:
+                self.sudoku[x][y] = i
+                self._do_resolve(pos+1)
+
+            self.sudoku[x][y] = 0
 
     def _left(self,x,y):
         left = [i for i in range(1,10)]
@@ -53,10 +78,8 @@ class Sudoku:
 
         return left
 
-    def is_sudoku(self,sudoku):
-        pass
-
-    def out_put(self,sudoku):
+    def _create_output(self,sudoku):
+        print 
         for i in range(1,10):
             for j in range(1,10):
                 print "%d" %sudoku[i-1][j-1], 
@@ -65,19 +88,34 @@ class Sudoku:
             if i%3 == 0:
                 print 
 
-start = time.time()
+    def _resolve_output(self,sudoku):
+        print
+        for i in range(1,10):
+            for j in range(1,10):
+                out = "%d" if self.sudoku_init[i-1][j-1] != 0 else "\033[1;31;40m%d\033[0m"
+                print out %sudoku[i-1][j-1], 
+                print '|' if j%3 == 0 else '',
+            print
+            if i%3 == 0:
+                print 
+
+
 sudoku = Sudoku()
-print "takes %s 秒" %(time.time() - start)
 
-'''
-sudoku = [[0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0]]
+start = time.time()
+sudoku.create()
+print "a sudoku created and it takes %s seconds" %(time.time() - start)
 
-'''
+start = time.time()
+aSudoku = [ [0,3,6,8,0,0,0,0,2],
+            [9,0,0,0,5,0,0,3,0],
+            [0,0,5,0,0,6,0,0,0],
+            [0,2,0,0,0,0,1,0,0],
+            [0,0,3,0,8,0,0,5,0],
+            [0,1,9,0,0,0,0,0,0],
+            [1,0,0,0,0,0,0,9,5],
+            [0,0,0,0,0,2,0,0,8],
+            [0,0,0,3,9,0,7,0,0] ]
+
+sudoku.resolve(aSudoku)
+print "the sudoku resolved and it takes %s seconds" %(time.time() - start)
