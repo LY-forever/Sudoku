@@ -60,13 +60,10 @@ class Sudoku:
         pass
 
     def out_put(self,sudoku):
-        print
         for i in range(1,10):
             for j in range(1,10):
-                if j%3==0:
-                    print "%d|" %sudoku[i-1][j-1],
-                else:
-                    print "%d " %sudoku[i-1][j-1],
+                print "%d" %sudoku[i-1][j-1], 
+                print '|' if j%3 == 0 else '',
             print
             if i%3 == 0:
                 print 
