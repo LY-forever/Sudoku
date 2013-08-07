@@ -1,33 +1,29 @@
 #coding: utf-8
 
 
-import random, sys, time, copy
+import sys, time, copy
+from random import choice
 
 class Sudoku:
 
     def __init__(self):
         line = [0 for i in range(1,10)]
-        self.sudoku = [copy.deepcopy(line) for i in range(1,10)]
-        while self.create() == False:
+        self.sudoku_init = [copy.deepcopy(line) for i in range(1,10)]
+
+        while(not self.create()):
             pass
         self.out_put(self.sudoku)
 
     def create(self):
-        for i in range(0,17):
-            pos = random.randint(0,80)
-            pos_x = pos / 9 
-            pos_y = pos % 9
-            tmp = self._left(pos_x,pos_y)
-            if len(tmp) == 0:
-                return False
-            self.sudoku[pos_x][pos_y] = random.choice(tmp)
+        self.sudoku = copy.deepcopy(self.sudoku_init)
+
         for i in range(0,9):
             for j in range(0,9):
                 if self.sudoku[i][j] == 0:
                     tmp = self._left(i,j)
                     if len(tmp) == 0:
                         return False
-                    self.sudoku[i][j] = random.choice(tmp)
+                    self.sudoku[i][j] = choice(tmp)
         return True
 
     def _left(self,x,y):
