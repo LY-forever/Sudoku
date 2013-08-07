@@ -3,6 +3,7 @@
 
 import sys, time, copy
 from random import choice
+import time
 
 class Sudoku:
 
@@ -64,8 +65,9 @@ class Sudoku:
             if i%3 == 0:
                 print 
 
-
+start = time.time()
 sudoku = Sudoku()
+print "takes %s 秒" %(time.time() - start)
 
 '''
 sudoku = [[0,0,0,0,0,0,0,0,0],
