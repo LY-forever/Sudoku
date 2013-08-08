@@ -100,22 +100,23 @@ class Sudoku:
                 print 
 
 
-sudoku = Sudoku()
+if __name__ == "__main__":
+    sudoku = Sudoku()
 
-start = time.time()
-sudoku.create()
-print "a sudoku created and it takes %s seconds" %(time.time() - start)
+    start = time.time()
+    sudoku.create()
+    print "a sudoku created and it takes %s seconds" %(time.time() - start)
 
-start = time.time()
-aSudoku = [ [0,3,6,8,0,0,0,0,2],
-            [9,0,0,0,5,0,0,3,0],
-            [0,0,5,0,0,6,0,0,0],
-            [0,2,0,0,0,0,1,0,0],
-            [0,0,3,0,8,0,0,5,0],
-            [0,1,9,0,0,0,0,0,0],
-            [1,0,0,0,0,0,0,9,5],
-            [0,0,0,0,0,2,0,0,8],
-            [0,0,0,3,9,0,7,0,0] ]
+    start = time.time()
+    aSudoku = [ [0,3,6,8,0,0,0,0,2],
+                [9,0,0,0,5,0,0,3,0],
+                [0,0,5,0,0,6,0,0,0],
+                [0,2,0,0,0,0,1,0,0],
+                [0,0,3,0,8,0,0,5,0],
+                [0,1,9,0,0,0,0,0,0],
+                [1,0,0,0,0,0,0,9,5],
+                [0,0,0,0,0,2,0,0,8],
+                [0,0,0,3,9,0,7,0,0] ]
 
-sudoku.resolve(aSudoku)
-print "the sudoku resolved and it takes %s seconds" %(time.time() - start)
+    sudoku.resolve(aSudoku)
+    print "the sudoku resolved and it takes %s seconds" %(time.time() - start)
