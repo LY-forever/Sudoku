@@ -4,7 +4,6 @@
 import sys
 import time
 import copy
-import time
 from random import choice
 
 
