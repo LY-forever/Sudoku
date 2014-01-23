@@ -34,24 +34,74 @@ func doCreate(sudoku Sudoku) (Sudoku, bool) {
 }
 
 func createOutput(sudoku Sudoku) {
-	for _, v := range sudoku {
-		fmt.Printf("%d\n", v)
+	for i := 0; i < 9; i++ {
+		for j := 0; j < 9; j++ {
+			fmt.Printf(" %d ", sudoku[i][j])
+			if j%3 == 2 {
+				fmt.Print("|")
+			}
+		}
+		fmt.Println()
+		if i%3 == 2 {
+			fmt.Println()
+		}
 	}
 }
 
-func solve() {
-	c := make(chan Sudoku, 10)
-	//sudoku := create()
-	go doSolve(c)
-	for i := range c {
-		createOutput(i)
-	}
+func solve(sudoku Sudoku) Sudoku {
+	c := make(chan Sudoku)
+	go doSolve(sudoku, 0, c)
+	solved := <-c
+	return solved
 }
 
-func doSolve(c chan Sudoku) {
-	sudoku := create()
-	c <- sudoku
-	close(c)
+func doSolve(sudoku Sudoku, pos int, c chan Sudoku) bool {
+
+	x := pos / 9
+	y := pos % 9
+
+	if pos > 80 {
+		c <- sudoku
+		close(c)
+		return true
+	}
+
+	if sudoku[x][y] != 0 {
+		doSolve(sudoku, pos+1, c)
+	} else {
+		left := left(sudoku, x, y)
+		if len(left) == 0 {
+			sudoku[x][y] = 0
+		} else {
+			for _, i := range left {
+				sudoku[x][y] = i
+				doSolve(sudoku, pos+1, c)
+			}
+		}
+	}
+	return false
+}
+
+func solveOutput(sudoku, solved Sudoku) {
+
+	for i := 0; i < 9; i++ {
+		for j := 0; j < 9; j++ {
+			var out string
+			if sudoku[i][j] == 0 {
+				out = " \033[1;31;40m%d\033[0m "
+			} else {
+				out = " %d "
+			}
+			fmt.Printf(out, solved[i][j])
+			if j%3 == 2 {
+				fmt.Print("|")
+			}
+		}
+		fmt.Println()
+		if i%3 == 2 {
+			fmt.Println()
+		}
+	}
 }
 
 func left(sudoku Sudoku, x, y int) Left {
@@ -110,4 +160,20 @@ func removeFromList(i int, list Left) Left {
 func main() {
 	s := create()
 	createOutput(s)
+
+	fmt.Println()
+
+	aSudoku := Sudoku{
+		{0, 3, 6, 8, 0, 0, 0, 0, 2},
+		{9, 0, 0, 0, 5, 0, 0, 3, 0},
+		{0, 0, 5, 0, 0, 6, 0, 0, 0},
+		{0, 2, 0, 0, 0, 0, 1, 0, 0},
+		{0, 0, 3, 0, 8, 0, 0, 5, 0},
+		{0, 1, 9, 0, 0, 0, 0, 0, 0},
+		{1, 0, 0, 0, 0, 0, 0, 9, 5},
+		{0, 0, 0, 0, 0, 2, 0, 0, 8},
+		{0, 0, 0, 3, 9, 0, 7, 0, 0},
+	}
+	solved := solve(aSudoku)
+	solveOutput(aSudoku, solved)
 }
