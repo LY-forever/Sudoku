@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"math/rand"
-    "time"
+	"time"
 )
 
 type Sudoku [9][9]int
@@ -35,7 +35,7 @@ func doCreate(sudoku Sudoku) (Sudoku, bool) {
 }
 
 func createOutput(sudoku Sudoku) {
-    fmt.Println()
+	fmt.Println()
 	for i := 0; i < 9; i++ {
 		for j := 0; j < 9; j++ {
 			fmt.Printf(" %d ", sudoku[i][j])
@@ -51,7 +51,7 @@ func createOutput(sudoku Sudoku) {
 }
 
 func solve(sudoku Sudoku) Sudoku {
-	c := make(chan Sudoku)
+	c := make(chan Sudoku,10)
 	go doSolve(sudoku, 0, c)
 	solved := <-c
 	return solved
@@ -86,7 +86,7 @@ func doSolve(sudoku Sudoku, pos int, c chan Sudoku) bool {
 
 func solveOutput(sudoku, solved Sudoku) {
 
-    fmt.Println()
+	fmt.Println()
 	for i := 0; i < 9; i++ {
 		for j := 0; j < 9; j++ {
 			var out string
@@ -161,14 +161,14 @@ func removeFromList(i int, list Left) Left {
 }
 
 func main() {
-    start := time.Now()
+	start := time.Now()
 	s := create()
 	createOutput(s)
-    fmt.Printf("cost %s\n",time.Now().Sub(start))
+	fmt.Printf("cost %s\n", time.Now().Sub(start))
 
 	fmt.Println()
 
-    start = time.Now()
+	start = time.Now()
 	aSudoku := Sudoku{
 		{0, 3, 6, 8, 0, 0, 0, 0, 2},
 		{9, 0, 0, 0, 5, 0, 0, 3, 0},
@@ -182,5 +182,5 @@ func main() {
 	}
 	solved := solve(aSudoku)
 	solveOutput(aSudoku, solved)
-    fmt.Printf("cost %s\n",time.Now().Sub(start))
+	fmt.Printf("cost %s\n", time.Now().Sub(start))
 }
