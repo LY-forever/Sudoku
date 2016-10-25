@@ -14,15 +14,15 @@
 #define SLEN 9
 #endif
 
-#define timesub(start, end, result)     \
-            do {                        \
-                (result)->tv_sec = (end)->tv_sec - (start)->tv_sec;		\
-                (result)->tv_usec = (end)->tv_usec - (start)->tv_usec;	\
-                if ((result)->tv_usec < 0) {				            \
-                    (result)->tv_sec--;				                    \
-                    (result)->tv_usec += 1000000;			            \
-                }                                                       \
-            }while(0)                                                   \
+#define timesub(start, end, result) \
+            do {    \
+                (result)->tv_sec = (end)->tv_sec - (start)->tv_sec; \
+                (result)->tv_usec = (end)->tv_usec - (start)->tv_usec;  \
+                if ((result)->tv_usec < 0) {    \
+                    (result)->tv_sec--; \
+                    (result)->tv_usec += 1000000;   \
+                }   \
+            }while(0)
 
 typedef int Sudoku[SLEN][SLEN];
 typedef struct {
