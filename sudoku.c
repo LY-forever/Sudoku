@@ -18,10 +18,6 @@
             do {    \
                 (result)->tv_sec = (end)->tv_sec - (start)->tv_sec; \
                 (result)->tv_usec = (end)->tv_usec - (start)->tv_usec;  \
-                if ((result)->tv_usec < 0) {    \
-                    (result)->tv_sec--; \
-                    (result)->tv_usec += 1000000;   \
-                }   \
             }while(0)
 
 typedef int Sudoku[SLEN][SLEN];
@@ -154,15 +150,15 @@ int main()
     gettimeofday(&StartTime, NULL);
     atexit(timeCost);
     Sudoku toSolve = {
-            {0, 3, 6, 8, 0, 0, 0, 0, 2},
-            {9, 0, 0, 0, 5, 0, 0, 3, 0},
-            {0, 0, 5, 0, 0, 6, 0, 0, 0},
-            {0, 2, 0, 0, 0, 0, 1, 0, 0},
-            {0, 0, 3, 0, 8, 0, 0, 5, 0},
-            {0, 1, 9, 0, 0, 0, 0, 0, 0},
-            {1, 0, 0, 0, 0, 0, 0, 9, 5},
-            {0, 0, 0, 0, 0, 2, 0, 0, 8},
-            {0, 0, 0, 3, 9, 0, 7, 0, 0}
+        {0, 3, 6, 8, 0, 0, 0, 0, 2},
+        {9, 0, 0, 0, 5, 0, 0, 3, 0},
+        {0, 0, 5, 0, 0, 6, 0, 0, 0},
+        {0, 2, 0, 0, 0, 0, 1, 0, 0},
+        {0, 0, 3, 0, 8, 0, 0, 5, 0},
+        {0, 1, 9, 0, 0, 0, 0, 0, 0},
+        {1, 0, 0, 0, 0, 0, 0, 9, 5},
+        {0, 0, 0, 0, 0, 2, 0, 0, 8},
+        {0, 0, 0, 3, 9, 0, 7, 0, 0}
     };
     memcpy(sudokuToSolve, toSolve, sizeof(Sudoku));
 
